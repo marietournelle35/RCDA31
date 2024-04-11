@@ -29,10 +29,23 @@ import com.example.rcda31.tp.ui.ArticleDetailView
 import com.example.rcda31.tp.ui.ArticleListView
 import com.example.rcda31.tp.ui.FormView
 
-enum class ArticleScreen(val title: String) {
-    START(title = "Vos articles"),
-    ADD_ARTICLE(title = "Ajouter votre article"),
-    DETAIL(title = "Votre article")
+enum class ArticleScreen(val title: String, var id: String?) {
+    START(title = "Vos articles", id = null),
+    ADD_ARTICLE(title = "Ajouter votre article", id = null),
+    DETAIL(title = "Votre article", id = null);
+
+    fun setId(id: String): ArticleScreen {
+        this.id = id
+        return this
+    }
+
+    fun getRouteWithId(): String {
+        if(this.id != null) (
+            return "${this.name}/${this.id}"
+        ) else {
+            return this.name
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,12 +83,17 @@ fun EniShopApp(
     // Get current back stack entry
     val backStackEntry by navController.currentBackStackEntryAsState()
 
-    val route = backStackEntry?.destination?.route ?: ArticleScreen.START.name
-    Log.i("ROUTE", route)
+    val id = navController.currentBackStackEntry?.arguments?.getString("idArticle")
+
     // Get the name of the current screen
-    val currentScreen = ArticleScreen.valueOf(
-        backStackEntry?.destination?.route ?: ArticleScreen.START.name
-    )
+    val currentScreen = if (id != null) {
+        ArticleScreen.DETAIL.setId(id)
+    } else {
+        ArticleScreen.valueOf(
+            backStackEntry?.destination?.route ?: ArticleScreen.START.name
+        )
+    }
+
 
 
     Scaffold(
@@ -89,7 +107,7 @@ fun EniShopApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = ArticleScreen.START.name,
+            startDestination = ArticleScreen.START.getRouteWithId(),
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
@@ -98,11 +116,10 @@ fun EniShopApp(
             composable(route = ArticleScreen.START.name) {
                 ArticleListView(
                     onAddArticle = {
-                        navController.navigate(ArticleScreen.ADD_ARTICLE.name)
+                        navController.navigate(ArticleScreen.ADD_ARTICLE.getRouteWithId())
                     },
                     onGoToDetailArticle = {
-                        Log.i("IDARTICLE", "$it")
-                        navController.navigate("${ArticleScreen.DETAIL.name}/$it")
+                        navController.navigate(ArticleScreen.DETAIL.setId(it.toString()).getRouteWithId())
                     }
                 )
             }
