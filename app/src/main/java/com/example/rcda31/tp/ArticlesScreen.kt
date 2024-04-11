@@ -16,48 +16,40 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.rcda31.R
 import com.example.rcda31.tp.ui.ArticleDetailView
 import com.example.rcda31.tp.ui.ArticleListView
 import com.example.rcda31.tp.ui.FormView
 
-enum class ArticleScreen(val title: String, var id: String?) {
-    START(title = "Vos articles", id = null),
-    ADD_ARTICLE(title = "Ajouter votre article", id = null),
-    DETAIL(title = "Votre article", id = null);
+enum class ArticleScreen(val route: String, val title: String) {
+    START("start", "Vos articles"),
+    ADD_ARTICLE("addArticle", "Ajouter votre article"),
+    DETAIL("detail/{idArticle}", "Votre article");
 
-    fun setId(id: String): ArticleScreen {
-        this.id = id
-        return this
-    }
-
-    fun getRouteWithId(): String {
-        if(this.id != null) (
-            return "${this.name}/${this.id}"
-        ) else {
-            return this.name
-        }
+    fun withArgs(vararg args: String): String {
+        return this.route.replace("{idArticle}", args.first())
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EniShopAppBar(
-    currentScreen: ArticleScreen,
+    currentScreen: String,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        title = { Text(currentScreen.title) },
+        title = { Text(currentScreen) },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
@@ -80,20 +72,14 @@ fun EniShopApp(
     navController: NavHostController = rememberNavController()
 ) {
 
-    // Get current back stack entry
-    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
-    val id = navController.currentBackStackEntry?.arguments?.getString("idArticle")
-
-    // Get the name of the current screen
-    val currentScreen = if (id != null) {
-        ArticleScreen.DETAIL.setId(id)
-    } else {
-        ArticleScreen.valueOf(
-            backStackEntry?.destination?.route ?: ArticleScreen.START.name
-        )
+    val currentScreen = when {
+        currentRoute?.startsWith(ArticleScreen.DETAIL.route.split("/{")[0]) == true -> {
+            ArticleScreen.DETAIL.title
+        }
+        else -> ArticleScreen.entries.find { it.route == currentRoute }?.title ?: ArticleScreen.START.title
     }
-
 
 
     Scaffold(
@@ -107,26 +93,29 @@ fun EniShopApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = ArticleScreen.START.getRouteWithId(),
+            startDestination = ArticleScreen.START.name,
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
         ) {
-            composable(route = ArticleScreen.START.name) {
+            composable(route = ArticleScreen.START.route) {
                 ArticleListView(
                     onAddArticle = {
-                        navController.navigate(ArticleScreen.ADD_ARTICLE.getRouteWithId())
+                        navController.navigate(ArticleScreen.ADD_ARTICLE.route)
                     },
                     onGoToDetailArticle = {
-                        navController.navigate(ArticleScreen.DETAIL.setId(it.toString()).getRouteWithId())
+                        navController.navigate(ArticleScreen.DETAIL.withArgs(it.toString()))
                     }
                 )
             }
-            composable(route = ArticleScreen.ADD_ARTICLE.name) {
+            composable(route = ArticleScreen.ADD_ARTICLE.route) {
                 FormView()
             }
-            composable(route = "${ArticleScreen.DETAIL.name}/{idArticle}") { navBackStackEntry ->
+            composable(
+                route = ArticleScreen.DETAIL.route,
+                arguments = listOf(navArgument("idArticle") { type = NavType.StringType })
+            ) { navBackStackEntry ->
                 val idArticle = navBackStackEntry.arguments?.getString("idArticle")
                 idArticle?.let { id ->
                     val articleId = id.toLong()

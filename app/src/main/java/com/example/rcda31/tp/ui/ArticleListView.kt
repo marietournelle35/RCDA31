@@ -29,7 +29,6 @@ import com.example.rcda31.tp.viewmodel.ArticleListViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArticleListView(
     viewModel: ArticleListViewModel = viewModel(factory = ArticleListViewModel.Factory),
@@ -38,59 +37,13 @@ fun ArticleListView(
 ) {
     val articles by remember(viewModel) {viewModel.articleList}.collectAsState()
 
-    val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.FRANCE)
-
     Column(
         Modifier.padding(24.dp)
     ) {
 
         articles.forEach { article: Article ->
-            var date = "Date inconnue"
-            article.realaseDate?.let {
-                date = formatter.format(date)
-            }
-
-            Card(
-                modifier = Modifier
-                    .padding(vertical = 16.dp),
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 2.dp
-                ),
-                onClick = { onGoToDetailArticle(article.id) }
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(13.dp)
-                ) {
-                    Column (
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                text = article.title,
-                                textAlign = TextAlign.Start
-                            )
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Text(
-                                text = article.price.toString() + "€",
-                                textAlign = TextAlign.End
-                            )
-                        }
-                        Row (
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text = date,
-                                fontSize = 12.sp,
-                                fontStyle = FontStyle.Italic
-                            )
-                        }
-                    }
-                }
+            ItemCardView(article = article) {
+                onGoToDetailArticle(it)
             }
         }
 
@@ -107,6 +60,62 @@ fun ArticleListView(
             }
         }
     }
+}
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ItemCardView(
+    article: Article,
+    onGoToDetailArticle: (Long) -> Unit
+) {
 
+    val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.FRANCE)
+
+    var date = "Date inconnue"
+    article.realaseDate?.let {
+        date = formatter.format(date)
+    }
+
+    Card(
+        modifier = Modifier
+            .padding(vertical = 16.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 2.dp
+        ),
+        onClick = { onGoToDetailArticle(article.id) }
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(13.dp)
+        ) {
+            Column (
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = article.title,
+                        textAlign = TextAlign.Start
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = article.price.toString() + "€",
+                        textAlign = TextAlign.End
+                    )
+                }
+                Row (
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = date,
+                        fontSize = 12.sp,
+                        fontStyle = FontStyle.Italic
+                    )
+                }
+            }
+        }
+    }
 }
