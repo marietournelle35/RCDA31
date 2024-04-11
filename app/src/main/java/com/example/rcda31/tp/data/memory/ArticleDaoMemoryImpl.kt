@@ -5,7 +5,7 @@ import com.example.rcda31.tp.model.Article
 
 class ArticleDaoMemoryImpl : ArticleDAO {
 
-    private val articlesInMemory: MutableList<Article> = mutableListOf<Article>(
+    private val articlesInMemory: MutableList<Article> = mutableListOf(
         Article(
             1,
             "Souris",
@@ -25,6 +25,10 @@ class ArticleDaoMemoryImpl : ArticleDAO {
         articlesInMemory.add(article)
         article.id = articlesInMemory.last().id + 1
         return article.id
+    }
+
+    override fun getAllArticle(): List<Article> {
+        return  articlesInMemory
     }
 
 

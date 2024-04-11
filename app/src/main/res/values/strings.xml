@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RCDA31</string>
+    <string name="back_button">Retour</string>
 </resources>

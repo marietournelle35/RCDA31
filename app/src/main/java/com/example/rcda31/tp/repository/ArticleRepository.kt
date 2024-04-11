@@ -13,8 +13,12 @@ object ArticleRepository {
     fun getArticle(id : Long) : Article {
         return articleDAO.selectById(id)
     }
-    fun addArticle(article: Article) : Long{
+    fun addArticle(article: Article) : Long {
         return articleDAO.addNewOne(article)
+    }
+
+    fun getArticles() : List<Article> {
+        return articleDAO.getAllArticle()
     }
 
 }

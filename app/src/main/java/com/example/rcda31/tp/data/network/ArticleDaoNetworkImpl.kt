@@ -11,4 +11,8 @@ class ArticleDaoNetworkImpl : ArticleDAO {
     override fun addNewOne(article: Article): Long {
         TODO("Not yet implemented")
     }
+
+    override fun getAllArticle(): List<Article> {
+        TODO("Not yet implemented")
+    }
 }

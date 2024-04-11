@@ -7,4 +7,6 @@ interface ArticleDAO {
 
     fun addNewOne(article: Article) : Long
 
+    fun getAllArticle() : List<Article>
+
 }

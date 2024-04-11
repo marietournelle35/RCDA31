@@ -6,10 +6,9 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.rcda31.tp.model.Article
 import com.example.rcda31.tp.repository.ArticleRepository
 
-class FormViewModel(
+class ArticleDetailViewModel(
     private val articleRepository: ArticleRepository
 ): ViewModel() {
-
     companion object {
 
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
@@ -19,14 +18,14 @@ class FormViewModel(
                 extras: CreationExtras
             ): T {
 
-                return FormViewModel(
+                return ArticleDetailViewModel(
                     ArticleRepository
                 ) as T
             }
         }
     }
 
-    fun saveArticle(article: Article) {
-        articleRepository.addArticle(article)
+    fun fetchArticle(idArticle: Long): Article {
+        return articleRepository.getArticle(idArticle)
     }
 }
