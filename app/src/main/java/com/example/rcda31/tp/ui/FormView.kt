@@ -1,5 +1,6 @@
 package com.example.rcda31.tp.ui
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,9 +33,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
+import android.os.Handler
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
-fun FormView(viewModel: FormViewModel = viewModel(factory = FormViewModel.Factory)){
+fun FormView(
+    viewModel: FormViewModel = viewModel(factory = FormViewModel.Factory),
+    onNavigateToHome: () -> Unit
+){
+    val context = LocalContext.current
 
     var title by rememberSaveable {
         mutableStateOf("")
@@ -49,15 +57,11 @@ fun FormView(viewModel: FormViewModel = viewModel(factory = FormViewModel.Factor
         mutableStateOf("")
     }
 
-    var isVisible by rememberSaveable {
-        mutableStateOf(false)
-    }
-
     fun isSaveButtonEnabled() : Boolean {
         return title.isNotEmpty() && description.isNotEmpty() && price.isNotEmpty() && releaseDate.isNotEmpty()
     }
 
-    fun submitArticle() {
+    fun submitArticle(context: Context) {
         val format = SimpleDateFormat("dd-MM-yyyy", Locale.FRANCE)
         val date = format.parse(releaseDate)
 
@@ -74,6 +78,8 @@ fun FormView(viewModel: FormViewModel = viewModel(factory = FormViewModel.Factor
                 realaseDate = date
             )
         )
+
+        Toast.makeText(context, "Votre article a été enregistré avec succès", Toast.LENGTH_LONG).show()
     }
 
     Column(
@@ -138,10 +144,8 @@ fun FormView(viewModel: FormViewModel = viewModel(factory = FormViewModel.Factor
             Button(
                 enabled = isSaveButtonEnabled(),
                 onClick = {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        submitArticle()
-                        isVisible = true
-                    }
+                    submitArticle(context)
+                    onNavigateToHome()
                           },
                 modifier = Modifier.width(250.dp)
             ) {
@@ -153,11 +157,5 @@ fun FormView(viewModel: FormViewModel = viewModel(factory = FormViewModel.Factor
         }
 
         Spacer(modifier = Modifier.height(32.dp))
-
-        SimpleSnackbar(
-            isVisible = isVisible,
-            message = "Vous venez de créer l'article $title vendu pour un montant de $price",
-            onHide = { isVisible = false }
-        )
     }
 }

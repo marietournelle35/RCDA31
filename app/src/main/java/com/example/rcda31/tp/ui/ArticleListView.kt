@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -37,18 +39,24 @@ fun ArticleListView(
 ) {
     val articles by remember(viewModel) {viewModel.articleList}.collectAsState()
 
-    Column(
-        Modifier.padding(24.dp)
-    ) {
+    Column(modifier = Modifier.padding(24.dp)) {
 
-        articles.forEach { article: Article ->
-            ItemCardView(article = article) {
-                onGoToDetailArticle(it)
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .weight(1f, false)
+        ){
+            articles.forEach { article: Article ->
+                ItemCardView(article = article) {
+                    onGoToDetailArticle(it)
+                }
             }
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 32.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             Button(
@@ -73,7 +81,7 @@ fun ItemCardView(
 
     var date = "Date inconnue"
     article.realaseDate?.let {
-        date = formatter.format(date)
+        date = formatter.format(it)
     }
 
     Card(

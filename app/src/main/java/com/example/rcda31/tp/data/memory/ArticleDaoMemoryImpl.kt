@@ -23,7 +23,7 @@ class ArticleDaoMemoryImpl : ArticleDAO {
 
     override fun addNewOne(article: Article): Long {
         articlesInMemory.add(article)
-        article.id = articlesInMemory.last().id + 1
+        article.id = articlesInMemory.size.toLong()
         return article.id
     }
 

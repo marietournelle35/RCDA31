@@ -110,7 +110,11 @@ fun EniShopApp(
                 )
             }
             composable(route = ArticleScreen.ADD_ARTICLE.route) {
-                FormView()
+                FormView(
+                    onNavigateToHome = {
+                        navController.navigateUp()
+                    }
+                )
             }
             composable(
                 route = ArticleScreen.DETAIL.route,
