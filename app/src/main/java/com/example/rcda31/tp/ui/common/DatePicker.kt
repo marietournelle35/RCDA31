@@ -66,7 +66,9 @@ fun DatePicker(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         colors = TextFieldDefaults.colors(
-            disabledTextColor = Color.Black
+            disabledContainerColor = Color.White.copy(alpha = 0.6f),
+            disabledTextColor = Color.DarkGray,
+            disabledIndicatorColor = MaterialTheme.colorScheme.secondary
         )
     )
 }

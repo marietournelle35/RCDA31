@@ -1,8 +1,14 @@
 package com.example.rcda31.tp
 
 import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -17,6 +23,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -49,9 +59,12 @@ fun EniShopAppBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        title = { Text(currentScreen) },
+        title = { Text(
+            text = currentScreen,
+            color = Color.White
+            ) },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = Color.Black.copy(alpha = 0.6f)
         ),
         modifier = modifier,
         navigationIcon = {
@@ -59,7 +72,8 @@ fun EniShopAppBar(
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back_button)
+                        contentDescription = stringResource(R.string.back_button),
+                        tint = Color.White
                     )
                 }
             }
@@ -91,6 +105,13 @@ fun EniShopApp(
             )
         }
     ) { innerPadding ->
+        Image(
+            painter = painterResource(id = R.drawable.background_mobile),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxSize(),
+            contentScale = ContentScale.FillBounds
+        )
         NavHost(
             navController = navController,
             startDestination = ArticleScreen.START.name,

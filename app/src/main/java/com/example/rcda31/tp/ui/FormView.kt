@@ -1,6 +1,7 @@
 package com.example.rcda31.tp.ui
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,16 +28,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.rcda31.tp.model.Article
 import com.example.rcda31.tp.ui.common.DatePicker
 import com.example.rcda31.tp.ui.common.ESTexTield
-import com.example.rcda31.tp.ui.common.SimpleSnackbar
 import com.example.rcda31.tp.viewmodel.FormViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
-import android.os.Handler
-import android.widget.Toast
-import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun FormView(

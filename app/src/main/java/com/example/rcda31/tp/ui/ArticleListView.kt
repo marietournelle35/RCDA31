@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -88,14 +89,16 @@ fun ItemCardView(
         modifier = Modifier
             .padding(vertical = 16.dp),
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+
+        colors = CardDefaults.elevatedCardColors(
+            Color.White.copy(alpha = 0.4f)
         ),
         onClick = { onGoToDetailArticle(article.id) }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(13.dp)
+            modifier = Modifier
+                .padding(13.dp)
         ) {
             Column (
                 verticalArrangement = Arrangement.spacedBy(12.dp)
