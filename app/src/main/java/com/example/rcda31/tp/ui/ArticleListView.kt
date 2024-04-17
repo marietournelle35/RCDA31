@@ -93,7 +93,9 @@ fun ItemCardView(
         colors = CardDefaults.elevatedCardColors(
             Color.White.copy(alpha = 0.4f)
         ),
-        onClick = { onGoToDetailArticle(article.id) }
+        onClick = {
+            onGoToDetailArticle(article.id)
+        }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

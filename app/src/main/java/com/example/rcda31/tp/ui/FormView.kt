@@ -69,7 +69,7 @@ fun FormView(
                 title = title,
                 description = description,
                 price = priceDouble,
-                urlImage = null,
+                image = null,
                 realaseDate = date
             )
         )

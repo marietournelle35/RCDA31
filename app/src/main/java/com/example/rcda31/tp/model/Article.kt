@@ -3,10 +3,11 @@ package com.example.rcda31.tp.model
 import java.util.Date
 
 data class Article(
-    var id: Long,
-    val title: String,
-    val description: String,
-    val price: Double,
-    val urlImage: String?,
-    val realaseDate: Date?
+    var id: Long = -1,
+    val title: String = "",
+    val price: Double = 0.0,
+    val description: String = "",
+    val image: String? = "",
+    @Transient
+    val realaseDate: Date? = Date()
 )

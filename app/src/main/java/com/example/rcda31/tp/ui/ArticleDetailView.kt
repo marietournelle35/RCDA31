@@ -12,15 +12,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.rcda31.tp.model.Article
 import com.example.rcda31.tp.viewmodel.ArticleDetailViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -31,7 +39,7 @@ fun ArticleDetailView(
     viewModel: ArticleDetailViewModel = viewModel(factory = ArticleDetailViewModel.Factory),
     ) {
 
-    val article = viewModel.fetchArticle(idArticle = idArticle)
+    val article by remember(viewModel) {viewModel.article}.collectAsState()
 
     val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.FRANCE)
 
@@ -66,9 +74,9 @@ fun ArticleDetailView(
                             context.startActivity(intent)
                         }
                 )
-                if(article.urlImage != null) {
+                if(article.image != null) {
                     AsyncImage(
-                        model = article.urlImage,
+                        model = article.image,
                         contentDescription = null,
                         alignment = Alignment.Center
                     )

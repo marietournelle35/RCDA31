@@ -8,16 +8,16 @@ import com.example.rcda31.tp.data.DaoFactory
 
 object ArticleRepository {
 
-    private val articleDAO : ArticleDAO = DaoFactory.createArticleDAO(DaoType.MEMORY)
+    private val articleDAO : ArticleDAO = DaoFactory.createArticleDAO(DaoType.NETWORK)
 
-    fun getArticle(id : Long) : Article {
+    suspend fun getArticle(id : Long) : Article {
         return articleDAO.selectById(id)
     }
     fun addArticle(article: Article) : Long {
         return articleDAO.addNewOne(article)
     }
 
-    fun getArticles() : List<Article> {
+    suspend fun getArticles() : List<Article> {
         return articleDAO.getAllArticle()
     }
 

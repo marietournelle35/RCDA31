@@ -65,6 +65,11 @@ dependencies {
     implementation(libs.material)
     implementation(libs.compose.destinations.core)
     implementation(libs.io.coil.kt)
+    implementation(libs.com.squareup.moshi.kotlin)
+    implementation(libs.com.squareup.moshi)
+    implementation(libs.com.squareup.retrofit2)
+    implementation(libs.com.squareup.retrofit2.converter)
+    implementation(libs.com.squareup.okhttp3)
 
     ksp(libs.compose.destinations.ksp)
 

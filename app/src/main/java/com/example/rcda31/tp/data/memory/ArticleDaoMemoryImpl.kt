@@ -9,15 +9,15 @@ class ArticleDaoMemoryImpl : ArticleDAO {
         Article(
             1,
             "Souris",
-            "Souris sans fil",
             10.0,
+            "Souris sans fil",
             "https://m.media-amazon.com/images/I/61-GeOlhtlL._AC_SX679_.jpg",
             null
         ),
-        Article(2, "Ecran", "Ecran 27\" FULL HD", 780.40, "", null),
-        Article(3, "Barrete de mémoire vive", "RAM 2 x 16Go", 45.90, "", null)
+        Article(2, "Ecran",  780.40, "Ecran 27\" FULL HD","", null),
+        Article(3, "Barrete de mémoire vive",  45.90, "RAM 2 x 16Go","", null)
     )
-    override fun selectById(id: Long): Article {
+    override suspend fun selectById(id: Long): Article {
         return articlesInMemory.first {article -> article.id == id }
     }
 
@@ -27,7 +27,7 @@ class ArticleDaoMemoryImpl : ArticleDAO {
         return article.id
     }
 
-    override fun getAllArticle(): List<Article> {
+    override suspend fun getAllArticle(): List<Article> {
         return  articlesInMemory
     }
 
