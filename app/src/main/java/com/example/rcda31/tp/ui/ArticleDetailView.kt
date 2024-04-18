@@ -18,24 +18,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.example.rcda31.tp.model.Article
 import com.example.rcda31.tp.viewmodel.ArticleDetailViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
 fun ArticleDetailView(
-    idArticle: Long,
     viewModel: ArticleDetailViewModel = viewModel(factory = ArticleDetailViewModel.Factory),
     ) {
 

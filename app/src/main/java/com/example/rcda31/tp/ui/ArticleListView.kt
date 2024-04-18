@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.rcda31.tp.model.Article
+import com.example.rcda31.tp.utils.NavigationHelper
 import com.example.rcda31.tp.viewmodel.ArticleListViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -36,7 +36,7 @@ import java.util.Locale
 fun ArticleListView(
     viewModel: ArticleListViewModel = viewModel(factory = ArticleListViewModel.Factory),
     onAddArticle: () -> Unit,
-    onGoToDetailArticle: (Long) -> Unit
+    onGoToDetailArticle: () -> Unit
 ) {
     val articles by remember(viewModel) {viewModel.articleList}.collectAsState()
 
@@ -49,7 +49,7 @@ fun ArticleListView(
         ){
             articles.forEach { article: Article ->
                 ItemCardView(article = article) {
-                    onGoToDetailArticle(it)
+                    onGoToDetailArticle()
                 }
             }
         }
@@ -71,11 +71,10 @@ fun ArticleListView(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemCardView(
     article: Article,
-    onGoToDetailArticle: (Long) -> Unit
+    onGoToDetailArticle: () -> Unit
 ) {
 
     val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.FRANCE)
@@ -94,7 +93,8 @@ fun ItemCardView(
             Color.White.copy(alpha = 0.4f)
         ),
         onClick = {
-            onGoToDetailArticle(article.id)
+            NavigationHelper.ID_ARG = article.id
+            onGoToDetailArticle()
         }
     ) {
         Row(
